@@ -14,6 +14,8 @@ import {
   VStack,
   HStack,
   Text,
+  Input,
+  chakra,
 } from "@chakra-ui/react";
 
 import { message, Upload } from 'antd';
@@ -108,70 +110,99 @@ const dummyRequest = ({ file  , onSuccess  }) => {
 
   return (
     <>
-        <Text fontSize='36px'>Step 2 - Business Info</Text>
-            <div className="inputWrapper">
+            <VStack width="90%" padding="32px">
+            <Text width="90%" marginLeft="8px" marginTop="32px" marginBottom="24px" fontStyle="normal" fontWeight="600" fontSize="28px" lineHeight="100%" color="white" textAlign="start">Step 2 - Business Info</Text>
+
             <Flex width="90%">
-            <input
+            <Input
+                _focus={{boxShadow: 'none'}}
                 type="legalName"
-                style={{width: '50%'}}
-                className="inputs"
+                width="55%"
+                fontWeight="500"
+                borderRadius="8px"
+                margin="4px"
+                color="#fff"
+                focusBorderColor="white"
+                size='md'
+                height="45px"
                 onChange={(e) => setLegalName(e.target.value)}
                 placeholder="Your full legal name"
             />
-            <input
-                type="twitterHandle"
-                style={{width: '39%'}}
-                className="inputs"
-                onChange={(e) => setTwitterHandle(e.target.value)}
-                placeholder="Your Twitter Handle"
+            <Input
+              _focus={{boxShadow: 'none'}}
+              type="twitterHandle"
+              width="45%"
+              fontWeight="500"
+              borderRadius="8px"
+              margin="4px"
+              color="#fff"
+              focusBorderColor="white"
+              size='md'
+              height="45px"
+              onChange={(e) => setTwitterHandle(e.target.value)}
+              placeholder="Your Twitter Handle"
             />
             </Flex>
             <Flex width="90%">
-                <input
-                    type="websiteURL"
-                    style={{width: '92%'}}
-                    className="inputs"
-                    onChange={(e) => setWebsiteURL(e.target.value)}
-                    placeholder="URL to your company website"
+                <Input
+                  _focus={{boxShadow: 'none'}}
+                  type="websiteURL"
+                  width="100%"
+                  fontWeight="500"
+                  borderRadius="8px"
+                  margin="4px"
+                  color="#fff"
+                  focusBorderColor="white"
+                  size='md'
+                  height="45px"
+                  onChange={(e) => setWebsiteURL(e.target.value)}
+                  placeholder="URL to your company website"
                 />
             </Flex>
             <Flex width="90%">
-                <input
-                    type="registrationURL"
-                    style={{width: '92%'}}
-                    className="inputs"
+                <Input
+                    _focus={{boxShadow: 'none'}}
+                    type="websiteURL"
+                    width="100%"
+                    fontWeight="500"
+                    borderRadius="8px"
+                    margin="4px"
+                    color="#fff"
+                    focusBorderColor="white"
+                    size='md'
+                    height="45px"
                     onChange={(e) => setRegistrationURL(e.target.value)}
                     placeholder="URL to your company's registration on your Secretary of State Website"
                 />
             </Flex>
             {ipfs && (
             <>
-                <Flex width="90%">
-                  <p style={{color: "white", margin: "16px", fontWeight: "bold"}}>Upload File using IPFS</p>
-                </Flex>
-                <div className="row" style={setting >= 2 ? {display: "flex", flexDirection:"row", alignItems:"center"} : {}}>
-                <div className="row" style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                    <span style={{color: setting === 0 ? "#D0312D" : "#95bb72", marginBottom: "16px", marginLeft: "16px", marginRight: "16px", fontWeight: "bold"}}> • Operating Agreement</span>
-                    <span style={{color: setting <= 1 ? "#D0312D" : "#95bb72", marginBottom: "16px", marginLeft: "16px", marginRight: "16px", fontWeight: "bold"}}>	• Driver's License</span>
-                </div>
+                <HStack width="90%" alignItems="center">
+                  <Text width="100%" color="white" margin="12px" fontSize="18px" fontWeight="bold">Upload File using IPFS</Text>
+                  <chakra.div width="90%" fontSize="18px" style={{display:"flex", flexDirection:"row", alignItems:"center",     justifyContent:"flex-end"}}>
+                    <chakra.span bgGradient={setting !== 0 ? `linear(to-tr,#9DCCF9, #908DF0, #E28695)` : `linear(to-tr,#fff, #fff`} bgClip='text' style={{marginTop:"12px", marginBottom: "16px", marginLeft: "8px", marginRight: "8px", fontWeight: "500"}}> • Operating Agreement</chakra.span>
+                    <chakra.span bgGradient={setting > 1 ? `linear(to-tr,#9DCCF9, #908DF0, #E28695)` : `linear(to-tr,#fff, #fff`} bgClip='text' style={{marginTop:"12px", marginBottom: "16px", marginLeft: "8px", marginRight: "8px", fontWeight: "500"}}>	• Driver's License</chakra.span>
+                  </chakra.div>
+                </HStack>
+                <chakra.div width="90%" fontSize="18px" style={setting >= 2 ? {display: "flex", flexDirection:"row", alignItems:"center"} : {}}>
                 {/* @ts-ignore */}
-                    {setting < 2 && <Dragger {...props} style={{width: "92%", margin:"12px", backgroundColor: "transparent", borderRadius: "16px", border: "solid", borderColor: "#868686", borderWidth: "3px"}}>
-                    <p className="ant-upload-drag-icon">
+                    {setting < 2 && <Dragger {...props} style={{width: "98%", margin:"12px", backgroundColor: "transparent", borderRadius: "16px", border: "solid", borderColor: "#868686"}}>
+                    <chakra.p className="ant-upload-drag-icon">
                         <UploadOutlined style={{color:"white"}}/>
-                    </p>
-                    <p className="ant-upload-text" style={{color:"white", fontWeight:"600"}}>{setting === 0 ? "Upload your Operating Agreement" : "Upload a picture of your Driver's License"}</p>
+                    </chakra.p>
+                    <chakra.p className="ant-upload-text" style={{color:"white", fontWeight:"500"}}>{setting === 0 ? "Upload your Operating Agreement" : "Upload a picture of your Driver's License"}</chakra.p>
                     </Dragger>}
-                    {setting >= 2 && <div style={{display: "flex", justifyContent: "flex-end", marginRight: "48px"}}>
-                    <button onClick={() => {return}} style={{height: "45px", backgroundColor: "white", color: "white", fontSize: "larger", fontWeight: "600", borderStyle: "none"}}>Submit</button>
-                    </div>}
-                </div>
+                    {setting >= 2 && <chakra.div style={{display: "flex", justifyContent: "flex-end"}}>
+                      <Button onClick={() => {return}} margin="12px" variant="solid" width="170px" height="48px" borderRadius={30} bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)">Submit</Button>
+                    </chakra.div>}
+                </chakra.div>
             </>
             )}
 
             {!ipfs && (
             <p>Oh oh, Not connected to IPFS. Checkout out the logs for errors</p>
             )}
-        </div>
+          </VStack>
         </>
   )
 }
@@ -193,82 +224,129 @@ function Form() {
       setFirstScreen(false)
     } else {
       setWarning(true)
+      setTimeout(() => setWarning(false), 2000)
     }
   }
 
   return (
     <Flex direction="row" justifyContent="center" alignItems="center">
-      <VStack marginTop="4%" width="80%" background="radial-gradient(131.48% 1096.24% at 108.6% 129.84%, #202229 0%, rgba(35, 38, 47, 0) 100%)" backdropFilter="blur(61.5px)" borderRadius="30px" paddingBottom="24px" marginBottom="10%">
+      <VStack marginTop="4%" width="100%" background="radial-gradient(131.48% 1096.24% at 108.6% 129.84%, #202229 0%, rgba(35, 38, 47, 0) 100%)" backdropFilter="blur(61.5px)" borderRadius="30px" padding="24px" marginBottom="10%">
         {
           firstScreen ?
             <>
-              <Text marginLeft="64px" marginTop="32px" marginBottom="24px" fontStyle="normal" fontWeight="700" fontSize="36px" lineHeight="100%" color="white">Step 1 - Minting Info</Text>
-              <VStack>
+              <VStack width="90%" padding="32px">
+              <Text width="100%" marginLeft="100px" marginTop="32px" marginBottom="24px" fontStyle="normal" fontWeight="600" fontSize="24px" lineHeight="100%" color="white" textAlign="start">Step 1 - Minting Info</Text>
                 <HStack width="90%">
-                  <input
+                  <Input
+                    _focus={{boxShadow: 'none'}}
                     type="name"
-                    style={{width: '50%'}}
-                    className="inputs"
+                    width="45%"
+                    fontWeight="500"
+                    borderRadius="8px"
+                    margin="4px"
+                    color="#fff"
+                    focusBorderColor="white"
+                    size='md'
+                    height="45px"
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="Your company name"
                   />
-                  <input
-                    type="date"
-                    style={{width: '35%'}}
-                    className="inputs"
+                  <Input
+                    _focus={{boxShadow: 'none'}}
+                    type="dateTime"
+                    width="55%"
+                    fontWeight="500"
+                    borderRadius="8px"
+                    margin="4px"
+                    color="#fff"
+                    focusBorderColor="white"
+                    size='md'
+                    height="45px"
                     onChange={(e) => setDate(e.target.value)}
                     placeholder="Founding date"
                   />
                 </HStack>
                 <HStack width="90%">
-                  <input
+                  <Input
+                    _focus={{boxShadow: 'none'}}
                     type="customers"
-                    style={{width: '60%'}}
-                    className="inputs"
+                    width="55%"
+                    fontWeight="500"
+                    borderRadius="8px "
+                    margin="4px"
+                    color="#fff"
+                    focusBorderColor="white"
+                    size='md'
+                    height="45px"
                     onChange={(e) => setCustomers(e.target.value)}
                     placeholder="# of customers"
                   />
-                  <input
+                  <Input
+                    _focus={{boxShadow: 'none'}}
                     type="members"
-                    style={{width: '25%'}}
-                    className="inputs"
+                    width="45%"
+                    fontWeight="500"
+                    borderRadius="8px "
+                    margin="4px"
+                    color="#fff"
+                    focusBorderColor="white"
+                    size='md'
+                    height="45px"
                     onChange={(e) => setMembers(e.target.value)}
                     placeholder="# of team members"
                   />
                 </HStack>
                 <Flex width="90%">
-                  <input
+                  <Input
+                    _focus={{boxShadow: 'none'}}
                     type="equity"
-                    style={{width: '92%'}}
-                    className="inputs"
+                    fontWeight="500"
+                    borderRadius="8px "
+                    margin="4px"
+                    color="#fff"
+                    focusBorderColor="white"
+                    size='md'
+                    height="45px"
                     onChange={(e) => setEquity(e.target.value)}
                     placeholder="What % of your equity would you like to liquidate?"
                   />
                 </Flex>
                 <Flex width="90%">
-                  <input
+                  <Input
+                      _focus={{boxShadow: 'none'}}
                       type="tokens"
-                      style={{width: '92%'}}
-                      className="inputs"
+                      fontWeight="500"
+                      borderRadius="8px "
+                      margin="4px"
+                      color="#fff"
+                      focusBorderColor="white"
+                      size='md'
+                      height="45px"
                       onChange={(e) => setTokens(e.target.value)}
                       placeholder="How many tokens would you like to mint? (Up to 5,000)"
                     />
                 </Flex>
                 <Flex width="90%">
-                  <input
+                  <Input
+                    _focus={{boxShadow: 'none'}}
                     type="relation"
-                    style={{width: '92%'}}
-                    className="inputs"
+                    fontWeight="500"
+                    borderRadius="8px "
+                    margin="4px"
+                    color="#fff"
+                    focusBorderColor="white"
+                    size='md'
+                    height="45px"
                     onChange={(e) => setRelation(e.target.value)}
                     placeholder="How many tokens would someone need to hold to legally own the corresponding equity? (Up to 100%)"
                   />
                 </Flex>
-                <div style={{display: "flex", justifyContent: "flex-end"}} className="row">
-                  <button onClick={nextStepHandler} style={{margin: "24px", height: "45px", backgroundColor: "white", color: "white", fontSize: "larger", fontWeight: "600", borderStyle: "none"}}>Next Step</button>
-                </div>
-                <div style={{display: "flex", justifyContent: "flex-end", textAlign: "end"}} className="row">
-                  {warning ? <div className="warning">Fill out all input fields before proceeding.</div> : <></>}
-                </div>
+                <Flex justifyContent="flex-end" width="90%">
+                  <Button onClick={nextStepHandler} margin="16px" variant="solid" width="170px" height="48px" borderRadius={30} bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)">Next Step</Button>
+                </Flex>
+                <Flex justifyContent="flex-end" textAlign="end" width="90%">
+                  {warning ? <Text color="#D0312D" marginRight="8px">Fill out all input fields before proceeding.</Text> : <></>}
+                </Flex>
               </VStack>
             </>
           :

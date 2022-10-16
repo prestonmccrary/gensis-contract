@@ -1,0 +1,489 @@
+export type Genesis = {
+  "version": "0.1.0",
+  "name": "genesis",
+  "instructions": [
+    {
+      "name": "initializeExchange",
+      "accounts": [
+        {
+          "name": "exchange",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "createCompanyListing",
+      "accounts": [
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "companyData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "companyDataOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "exchange",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "numShares",
+          "type": "u32"
+        },
+        {
+          "name": "basePrice",
+          "type": "u32"
+        },
+        {
+          "name": "days",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "trade",
+      "accounts": [
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "companyData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "companyDataOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "main",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "holding",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "exchange",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mintProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "company",
+          "type": "string"
+        },
+        {
+          "name": "numShares",
+          "type": "u32"
+        },
+        {
+          "name": "priceLevel",
+          "type": "u32"
+        }
+      ],
+      "returns": "u32"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "exchangeData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nextId",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "companyData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "belongsTo",
+            "type": "publicKey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "shares",
+            "type": "u32"
+          },
+          {
+            "name": "endDate",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "orderBook",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "totalShares",
+            "type": "u32"
+          },
+          {
+            "name": "currentSharesBought",
+            "type": "u32"
+          },
+          {
+            "name": "basePrice",
+            "type": "u32"
+          },
+          {
+            "name": "orders",
+            "type": {
+              "vec": {
+                "defined": "Order"
+              }
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "Order",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "buyer",
+            "type": "publicKey"
+          },
+          {
+            "name": "price",
+            "type": "u32"
+          },
+          {
+            "name": "quantity",
+            "type": "u32"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+};
+
+export const IDL: Genesis = {
+  "version": "0.1.0",
+  "name": "genesis",
+  "instructions": [
+    {
+      "name": "initializeExchange",
+      "accounts": [
+        {
+          "name": "exchange",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "createCompanyListing",
+      "accounts": [
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "companyData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "companyDataOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "exchange",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "numShares",
+          "type": "u32"
+        },
+        {
+          "name": "basePrice",
+          "type": "u32"
+        },
+        {
+          "name": "days",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "trade",
+      "accounts": [
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "companyData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "companyDataOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "main",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "holding",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "exchange",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mintProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "company",
+          "type": "string"
+        },
+        {
+          "name": "numShares",
+          "type": "u32"
+        },
+        {
+          "name": "priceLevel",
+          "type": "u32"
+        }
+      ],
+      "returns": "u32"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "exchangeData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nextId",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "companyData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "belongsTo",
+            "type": "publicKey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "shares",
+            "type": "u32"
+          },
+          {
+            "name": "endDate",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "orderBook",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "totalShares",
+            "type": "u32"
+          },
+          {
+            "name": "currentSharesBought",
+            "type": "u32"
+          },
+          {
+            "name": "basePrice",
+            "type": "u32"
+          },
+          {
+            "name": "orders",
+            "type": {
+              "vec": {
+                "defined": "Order"
+              }
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "Order",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "buyer",
+            "type": "publicKey"
+          },
+          {
+            "name": "price",
+            "type": "u32"
+          },
+          {
+            "name": "quantity",
+            "type": "u32"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+};

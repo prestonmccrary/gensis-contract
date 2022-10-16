@@ -15,8 +15,55 @@ import {
   Input,
   Divider,
 } from "@chakra-ui/react";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 
 import usdc from "./usdc.svg";
+
+const data = [
+  {
+    name: 'Page A',
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: 'Page B',
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: 'Page C',
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: 'Page D',
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: 'Page E',
+    uv: 1890,
+    pv: 4800,
+    amt: 2181,
+  },
+  {
+    name: 'Page F',
+    uv: 2390,
+    pv: 3800,
+    amt: 2500,
+  },
+  {
+    name: 'Page G',
+    uv: 3490,
+    pv: 4300,
+    amt: 2100,
+  },
+];
 
 export default function MintingPlace() {
   return (
@@ -64,84 +111,11 @@ export default function MintingPlace() {
             spacing="20px"
           >
             <HStack>
-              {/* trading history */}
-              {/* price */}
-              <SimpleGrid width="200px" spacing="20px">
-                {/* display prices in this column */}
-                <Box>
-                  <Text fontSize={18} fontWeight={600}>
-                    Price
-                  </Text>
-                  {/* USDC/Sol Logo */}
-                </Box>
-                <HStack>
-                  {/* USDC/Sol Logo */}
-                  <img src={usdc}></img>
-                  <Text fontWeight={600} fontSize={24}>
-                    2,110 USDC
-                  </Text>
-                </HStack>
-                <HStack>
-                  {/* USDC/Sol Logo */}
-                  <img src={usdc}></img>
-                  <Text fontWeight={600} fontSize={24}>
-                    1,983 USDC
-                  </Text>
-                </HStack>
-                <HStack>
-                  {/* USDC/Sol Logo */}
-                  <img src={usdc}></img>
-                  <Text fontWeight={600} fontSize={24}>
-                    1,374 USDC
-                  </Text>
-                </HStack>
-              </SimpleGrid>
-              {/* from which wallet */}
-              <SimpleGrid width="120px" spacing="20px">
-                <Text fontSize={18} fontWeight={600}>
-                  From
-                </Text>
-                {/* these are static wallet addresses */}
-                <Text fontWeight={600} fontSize={24}>
-                  0x7fn
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  6jPJf3
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  F93Lv
-                </Text>
-              </SimpleGrid>
-              {/* to which wallet*/}
-              <SimpleGrid width="120px" spacing="20px">
-                <Text fontSize={18} fontWeight={600}>
-                  To
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  5AQaX
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  GmmUP
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  2ec86C
-                </Text>
-              </SimpleGrid>
-              {/* date */}
-              <SimpleGrid width="200px" spacing="20px">
-                <Text fontSize={18} fontWeight={600}>
-                  Date
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  an hour ago
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  13 hours ago
-                </Text>
-                <Text fontWeight={600} fontSize={24}>
-                  2 days ago
-                </Text>
-              </SimpleGrid>
+                <ResponsiveContainer width="100%" height="100%">
+                <BarChart width={150} height={40} data={data}>
+                  <Bar dataKey="uv" fill="#8884d8" />
+                </BarChart>
+                </ResponsiveContainer>
             </HStack>
             <Divider></Divider>
             <HStack>

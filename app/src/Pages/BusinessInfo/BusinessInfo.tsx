@@ -16,15 +16,20 @@ export default function MarketPlace() {
           w="full"
           align="stretch"
           backgroundImage={pagebackground}
+          backgroundSize="cover"
           paddingLeft={40}
           paddingRight={40}
         >
+          {/* header */}
+          <Header />
           {/* Business Facts */}
           <BusinessFacts />
           {/* minting place */}
           <MintingPlace />
           {/* due dilligence */}
           <DueDilligence />
+          {/* footer */}
+          <Footer />
         </VStack>
       </Box>
     </>

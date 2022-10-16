@@ -16,9 +16,11 @@ export default function MarketPlace() {
           align="stretch"
           backgroundImage={pagebackground}
           paddingLeft={40}
+          backgroundSize="cover"
           paddingRight={40}
         >
           {/* Header */}
+          <Header />
           {/* Hero */}
           <Box textAlign="center">
             <Text fontWeight={700} fontSize={50}>

@@ -1,11 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useMemo } from "react";
-import { Landing, MarketPlace, BusinessInfo } from "./Pages";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Landing, MarketPlace, BusinessInfo, FormPage } from "./Pages";
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
+import {
+  GlowWalletAdapter,
+  LedgerWalletAdapter,
+  PhantomWalletAdapter,
+  SlopeWalletAdapter,
+  SolflareWalletAdapter,
+  SolletExtensionWalletAdapter,
+  SolletWalletAdapter,
+  TorusWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
 import {
   ConnectionProvider,
   WalletProvider,
@@ -18,24 +25,36 @@ import "./App.css";
 require("@solana/wallet-adapter-react-ui/styles.css");
 
 const App = () => {
-  const solNetwork = WalletAdapterNetwork.Mainnet;
+  // you can use Mainnet, Devnet or Testnet here
+  const solNetwork = WalletAdapterNetwork.Testnet;
   const endpoint = useMemo(() => clusterApiUrl(solNetwork), [solNetwork]);
   // initialise all the wallets you want to use
-  const wallets = useMemo(() => [new PhantomWalletAdapter()], [solNetwork]);
-
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new GlowWalletAdapter(),
+      new SlopeWalletAdapter(),
+      new TorusWalletAdapter(),
+      new LedgerWalletAdapter(),
+      new SolletExtensionWalletAdapter(),
+      new SolletWalletAdapter(),
+    ],
+    [solNetwork]
+  );
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets}>
         <WalletModalProvider>
-          <Router>
-            <Header />
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/marketplace" element={<MarketPlace />} />
-              <Route path="/businessinfo" element={<BusinessInfo />} />
-            </Routes>
-            <Footer />
-          </Router>
+          <div className="App">
+            <Router>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/marketplace" element={<MarketPlace />} />
+                <Route path="/businessinfo" element={<BusinessInfo />} />
+                <Route path="/form" element={<FormPage />} />
+              </Routes>
+            </Router>
+          </div>
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>

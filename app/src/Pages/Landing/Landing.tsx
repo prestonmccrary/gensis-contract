@@ -15,10 +15,12 @@ export default function Landing() {
         w="full"
         align="stretch"
         backgroundImage={pagebackground}
+        backgroundSize="cover"
         paddingLeft={40}
         paddingRight={40}
       >
-
+        {/* navbar */}
+        <WithSubnavigation />
         {/* hero text */}
         <CallToActionWithAnnotation />
         {/* hero grid */}
@@ -29,6 +31,7 @@ export default function Landing() {
         <Trending />
         {/* footer */}
       </VStack>
+      <Footer />
     </Box>
   );
 }

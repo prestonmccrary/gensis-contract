@@ -1,5 +1,9 @@
 import { ReactNode } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import Connection from "./Connection";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -13,6 +17,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import genesislogo from "./genesislogo.svg";
+import App from "../App";
 
 export default function Nav() {
   const navigate = useNavigate();
@@ -25,12 +30,17 @@ export default function Nav() {
     navigate("/");
   };
 
+  const navForm = () => {
+    navigate("/form");
+  };
+
   const navbusinessInfo = () => {
     navigate("/businessinfo");
   };
+
   return (
     <>
-      <Box bg="black" px={4} w="full" paddingLeft={40} paddingRight={40}>
+      <Box bg="black" px={4}>
         <Flex h="125px" alignItems={"center"} justifyContent={"space-between"}>
           <Box>
             <Link onClick={navigateHome}>
@@ -48,25 +58,35 @@ export default function Nav() {
                 py={12}
                 mb={2}
               >
-                <Link onClick={navMarketPlace} marginRight="25px">
-                  <Text>Market Place</Text>
-                </Link>
                 <ButtonGroup gap="4">
                   <Button
-                    variant="solid"
+                    colorScheme="Gray"
+                    width="150px"
+                    height="50px"
+                    variant="outline"
                     borderRadius={30}
-                    bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)"
-                    width="140px"
+                    onClick={navMarketPlace}
                   >
-                    <Text fontSize="14px">Mint</Text>
+                    Market Place
                   </Button>
                   <Button
                     colorScheme="Gray"
+                    width="150px"
+                    height="50px"
                     variant="outline"
                     borderRadius={30}
-                    width="140px"
+                    onClick={navForm}
                   >
-                    <Text fontSize="14px">Connect Wallet</Text>
+                    Mint Genesis
+                  </Button>
+                  <Button
+                    backgroundColor="#4C2FA2"
+                    variant="fill"
+                    width="200px"
+                    height="55px"
+                    borderRadius={30}
+                  >
+                    <WalletMultiButton></WalletMultiButton>
                   </Button>
                 </ButtonGroup>
               </Box>

@@ -1,5 +1,7 @@
 // grid that wraps left container and right container
 import { ReactNode } from "react";
+import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
+
 import {
   Box,
   Flex,
@@ -14,6 +16,7 @@ import {
   HStack,
   Image,
   SimpleGrid,
+  Spacer,
 } from "@chakra-ui/react";
 import bluecloud from "./bluecloud.svg";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -85,31 +88,35 @@ export default function HeroGrid() {
             </HStack>
           </VStack>
           {/* left bottom buttons */}
-          <Box width="371px" justifyContent="space-between">
+          <HStack width="371px">
             {/* button1 */}
             <Button
               variant="solid"
-              width="170px"
+              width="225px"
+              height="55px"
               borderRadius={30}
               bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)"
               marginRight="30px"
               onClick={navMarketPlace}
+              leftIcon={<AddIcon />}
+              iconSpacing="10px"
             >
-              <Text fontSize="14px">Bid tokens</Text>
+              Bid Now
             </Button>
             {/* button2 */}
             <Button
               colorScheme="Gray"
               variant="outline"
-              width="170px"
+              width="300px"
+              height="55px"
               borderRadius={30}
               onClick={navMarketPlace}
+              leftIcon={<SearchIcon />}
+              iconSpacing="10px"
             >
-              <Text fontSize="14px" fontWeight={400}>
-                Browse Start-ups
-              </Text>
+              Browse Startups
             </Button>
-          </Box>
+          </HStack>
         </VStack>
         {/* right box */}
         <VStack spacing={10}>
@@ -122,7 +129,7 @@ export default function HeroGrid() {
             paddingTop="20px"
             paddingBottom="20px"
           >
-            <Box width="100px">
+            <Box width="100px" paddingTop="13px">
               <img src={bluecloud}></img>
             </Box>
             <SimpleGrid justifyContent="start" textAlign="left" width="480px">

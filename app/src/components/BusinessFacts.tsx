@@ -14,9 +14,13 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 
+import Timer from "./Timer";
+
 import orangeCompany from "./orangeCompany.svg";
 
 export default function BusinessFacts() {
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 259200); // 10 minutes timer
   return (
     <>
       {/* overall grid */}
@@ -45,40 +49,7 @@ export default function BusinessFacts() {
             <Text fontSize={18} fontWeight={600}>
               Auction ending in
             </Text>
-            <HStack spacing={5}>
-              <VStack>
-                <Text fontSize={45} fontWeight={700}>
-                  27
-                </Text>
-                <Text fontSize={16} fontWeight={600}>
-                  Days
-                </Text>
-              </VStack>
-              <VStack>
-                <Text fontSize={45} fontWeight={700}>
-                  24
-                </Text>
-                <Text fontSize={16} fontWeight={600}>
-                  Hours
-                </Text>
-              </VStack>
-              <VStack>
-                <Text fontSize={45} fontWeight={700}>
-                  26
-                </Text>
-                <Text fontSize={16} fontWeight={600}>
-                  Mins
-                </Text>
-              </VStack>
-              <VStack>
-                <Text fontSize={45} fontWeight={700}>
-                  19
-                </Text>
-                <Text fontSize={16} fontWeight={600}>
-                  Secs
-                </Text>
-              </VStack>
-            </HStack>
+            <Timer expiryTimestamp={time} />
           </VStack>
           {/* left bottom buttons */}
         </VStack>

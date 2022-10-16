@@ -22,7 +22,7 @@ export default function MarketPlace() {
         </VStack>
         <VStack
           spacing={10}
-          w="full"
+          w="100vw"
           align="stretch"
           paddingLeft={40}
           paddingRight={40}

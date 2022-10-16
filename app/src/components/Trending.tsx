@@ -1,6 +1,7 @@
 // grid that wraps left container and right container
 import { ReactNode } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -16,6 +17,7 @@ import {
   HStack,
   Image,
   SimpleGrid,
+  Spacer,
 } from "@chakra-ui/react";
 
 import greenCompany from "./greenCompany.svg";
@@ -62,23 +64,29 @@ export default function Trending() {
                 shipping handsqueezed juices every month. $100,000 ARR to date.
               </Text>
             </SimpleGrid>
+            <Spacer />
             <Box>
               <Button
                 variant="solid"
-                width="170px"
+                width="130px"
+                height="50px"
                 borderRadius={30}
                 bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)"
                 marginRight="30px"
                 onClick={navMarketPlace}
+                leftIcon={<AddIcon />}
+                // leftIcon={<EmailIcon />}
               >
                 Bid Now
               </Button>
               <Button
                 colorScheme="Gray"
+                width="150px"
+                height="50px"
                 variant="outline"
-                width="170px"
                 borderRadius={30}
                 onClick={navMarketPlace}
+                leftIcon={<SearchIcon />}
               >
                 Learn More
               </Button>
@@ -104,23 +112,28 @@ export default function Trending() {
                 endpoints when building a front-end application
               </Text>
             </SimpleGrid>
+            <Spacer />
             <Box>
               <Button
                 variant="solid"
-                width="170px"
+                width="130px"
+                height="50px"
                 borderRadius={30}
                 bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)"
                 marginRight="30px"
                 onClick={navMarketPlace}
+                leftIcon={<AddIcon />}
               >
                 Bid Now
               </Button>
               <Button
                 colorScheme="Gray"
+                width="150px"
+                height="50px"
                 variant="outline"
-                width="170px"
                 borderRadius={30}
                 onClick={navMarketPlace}
+                leftIcon={<SearchIcon />}
               >
                 Learn More
               </Button>
@@ -146,23 +159,28 @@ export default function Trending() {
                 $945,000 ARR to date.
               </Text>
             </SimpleGrid>
+            <Spacer />
             <Box>
               <Button
                 variant="solid"
-                width="170px"
+                width="130px"
+                height="50px"
                 borderRadius={30}
                 bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)"
                 marginRight="30px"
                 onClick={navMarketPlace}
+                leftIcon={<AddIcon />}
               >
                 Bid Now
               </Button>
               <Button
                 colorScheme="Gray"
+                width="150px"
+                height="50px"
                 variant="outline"
-                width="170px"
                 borderRadius={30}
                 onClick={navMarketPlace}
+                leftIcon={<SearchIcon />}
               >
                 Learn More
               </Button>
@@ -188,23 +206,28 @@ export default function Trending() {
                 ML in GMV. Over 850,000 registered users to date.
               </Text>
             </SimpleGrid>
+            <Spacer />
             <Box>
               <Button
                 variant="solid"
-                width="170px"
+                width="130px"
+                height="50px"
                 borderRadius={30}
                 bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)"
                 marginRight="30px"
                 onClick={navMarketPlace}
+                leftIcon={<AddIcon />}
               >
                 Bid Now
               </Button>
               <Button
                 colorScheme="Gray"
+                width="150px"
+                height="50px"
                 variant="outline"
-                width="170px"
                 borderRadius={30}
                 onClick={navMarketPlace}
+                leftIcon={<SearchIcon />}
               >
                 Learn More
               </Button>
@@ -230,23 +253,28 @@ export default function Trending() {
                 current CRM through zapier zaps. Over 200,000 users.
               </Text>
             </SimpleGrid>
+            <Spacer />
             <Box>
               <Button
                 variant="solid"
-                width="170px"
+                width="130px"
+                height="50px"
                 borderRadius={30}
                 bgGradient="linear(to-tr,#9DCCF9, #908DF0, #E28695)"
                 marginRight="30px"
                 onClick={navMarketPlace}
+                leftIcon={<AddIcon />}
               >
                 Bid Now
               </Button>
               <Button
                 colorScheme="Gray"
+                width="150px"
+                height="50px"
                 variant="outline"
-                width="170px"
                 borderRadius={30}
                 onClick={navMarketPlace}
+                leftIcon={<SearchIcon />}
               >
                 Learn More
               </Button>

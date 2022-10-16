@@ -1,1 +1,9 @@
 @import '~antd/dist/antd.css';
+
+.ant-message-notice-content {
+    display: none;
+}
+
+.ant-upload-list-text-container {
+    display: none;
+}

@@ -1,3 +1,5 @@
+import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
+
 import {
   Box,
   Heading,
@@ -48,12 +50,16 @@ export default function CallToActionWithAnnotation() {
               position={"relative"}
             >
               <Button
-                colorScheme="white"
+                colorScheme="Gray"
                 variant="outline"
+                width="200px"
+                height="55px"
                 borderRadius={30}
                 onClick={navMarketPlace}
+                leftIcon={<SearchIcon />}
+                iconSpacing="10px"
               >
-                <Text fontSize="14px">Browse Start-ups</Text>
+                Browse Startups
               </Button>
             </Stack>
           </Stack>
