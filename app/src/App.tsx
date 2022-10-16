@@ -1,51 +1,75 @@
-import { useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Landing, MarketPlace, BusinessInfo, FormPage } from "./Pages";
-import { clusterApiUrl } from "@solana/web3.js";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {
-  GlowWalletAdapter,
-  LedgerWalletAdapter,
-  PhantomWalletAdapter,
-  SlopeWalletAdapter,
-  SolflareWalletAdapter,
-  SolletExtensionWalletAdapter,
-  SolletWalletAdapter,
-  TorusWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { useAnchorWallet, AnchorWallet } from "@solana/wallet-adapter-react";
 
 import "./App.css";
+import { useEffect, useState } from "react";
+import { Connection } from '@solana/web3.js';
+import {AnchorProvider } from '@project-serum/anchor';
+import { WalletKeypairError } from "@solana/wallet-adapter-base";
+
+
+import mint_idl from '../genesis_mint.json';
+import dex_idl from '../genesis.json';
 
 // import the styles
 require("@solana/wallet-adapter-react-ui/styles.css");
 
+
+
+const OWNER = "ywwQZFsBx2oCEbqnPoztH1vpQXJiNQE9QcVvaFwf4Vu"
+
+
+
 const App = () => {
   // you can use Mainnet, Devnet or Testnet here
-  const solNetwork = WalletAdapterNetwork.Testnet;
-  const endpoint = useMemo(() => clusterApiUrl(solNetwork), [solNetwork]);
-  // initialise all the wallets you want to use
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new GlowWalletAdapter(),
-      new SlopeWalletAdapter(),
-      new TorusWalletAdapter(),
-      new LedgerWalletAdapter(),
-      new SolletExtensionWalletAdapter(),
-      new SolletWalletAdapter(),
-    ],
-    [solNetwork]
-  );
+
+  const wallet = useAnchorWallet()
+  const [hasInit, setInit] = useState(false)
+
+
+  useEffect(() => {
+    if(!hasInit && wallet){
+      init()
+    }
+  }, [wallet, hasInit])
+
+  const init = async () => {
+    setInit(true)
+
+    
+    let userWallet = (wallet as AnchorWallet) 
+
+    let provider = await getProvider(userWallet);
+
+
+
+    // if(userWallet?.toBase58() === OWNER){
+    //   console.log('owner')
+
+    // } else {
+    //   console.log('reg')
+    // }
+  }
+
+  // const init_mint = () => {
+
+  //   const mintProgram = new Program(mint_idl, programID, provider);
+
+
+  // }
+
+  async function getProvider(wallet : AnchorWallet) {
+    const network = "http://127.0.0.1:8899";
+    const connection = new Connection(network);
+
+    return new AnchorProvider(connection, wallet, {})
+  }
+
+ 
+  
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets}>
-        <WalletModalProvider>
-          <div className="App">
+      <div className="App">
             <Router>
               <Routes>
                 <Route path="/" element={<Landing />} />
@@ -55,9 +79,6 @@ const App = () => {
               </Routes>
             </Router>
           </div>
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
   );
 };
 

@@ -10,3 +10,11 @@ code {
 .chakra-ui-dark {
   background-color: black;
 }
+
+.wallet-adapter-button:not([disabled]):hover {
+  background-color: rgba(0,0,0,0);
+}
+
+.wallet-adapter-button-trigger{
+  background-color: rgba(0,0,0,0);
+}
