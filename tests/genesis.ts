@@ -2,13 +2,21 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Genesis } from "../target/types/genesis";
 import { GenesisMint } from "../target/types/genesis_mint";
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey, SYSVAR_RENT_PUBKEY } from '@solana/web3.js';
 import { expect} from 'chai';
+import {MintKey} from './mint'
 
 import {
   TOKEN_PROGRAM_ID,
-  getAssociatedTokenAddress
-} from "@solana/spl-token";
+  MINT_SIZE,
+  createAssociatedTokenAccountInstruction,
+  getAssociatedTokenAddress,
+  createInitializeMintInstruction,
+  createAccount,
+  createFreezeAccountInstruction,
+  createInitializeAccountInstruction
+} from "@solana/spl-token"; 
+
 
 const seed_name = (s: string) : string => {
   return s.slice(0,32)
@@ -21,6 +29,8 @@ describe("genesis", () => {
   anchor.setProvider(provider);
 
   const program = anchor.workspace.Genesis as Program<Genesis>;
+
+  const mintProgram =  anchor.workspace.GenesisMint as Program<GenesisMint>;
 
   const exchangeKeypair = anchor.web3.Keypair.generate();
 
@@ -115,41 +125,133 @@ describe("genesis", () => {
       );
 
 
-     let res = await program.methods
-      .trade("Jimbo!", 25, 25)
-      .accounts({
-        user: provider.wallet.publicKey,
-        companyData: companyDataLocation,
-        companyDataOrders: companyOrderLocation,
-        exchange: exchangeKeypair.publicKey
-      })
-      .rpc();
 
-      console.log(res)
+
+  
+
+    let activeAddress = await getAssociatedTokenAddress(
+      MintKey.publicKey,
+      provider.wallet.publicKey,
+    );
+
+    let [holdingAddress, x_] = await PublicKey
+    .findProgramAddress(
+      [
+        anchor.utils.bytes.utf8.encode("holding-account"),
+        provider.publicKey.toBuffer()
+      ],
+      mintProgram.programId
+    )
+
 
     let orderBook = (await program.account.orderBook.fetch(companyOrderLocation))
     console.log(orderBook)
 
 
-
-    const user1 = anchor.web3.Keypair.generate();
-    const user2 = anchor.web3.Keypair.generate();
-
-
-    await program.methods
-    .trade("Jimbo!", 100, 27)
+     await program.methods
+    .trade("Jimbo!", 25, 25)
     .accounts({
       user: provider.wallet.publicKey,
       companyData: companyDataLocation,
       companyDataOrders: companyOrderLocation,
-      exchange: exchangeKeypair.publicKey
+      exchange: exchangeKeypair.publicKey,
+      main: activeAddress,
+      holding: holdingAddress,
+      mintProgram:  mintProgram.programId,
+      tokenProgram: TOKEN_PROGRAM_ID
     })
+    .rpc();
+
+    let res2 =  <anchor.web3.ParsedAccountData> (await program.provider.connection.getParsedAccountInfo(activeAddress)).value.data
+
+    console.log(
+      res2.parsed
+    )
+
+    orderBook = (await program.account.orderBook.fetch(companyOrderLocation))
+    console.log(orderBook)
+
+    // next
+
+
+    const user1 = anchor.web3.Keypair.generate();
+
+
+    let activeAddress2 = await getAssociatedTokenAddress(
+      MintKey.publicKey,
+      user1.publicKey,
+    );
+    let [holdingAddress2, x2_] = await PublicKey
+    .findProgramAddress(
+      [
+        anchor.utils.bytes.utf8.encode("holding-account"),
+        user1.publicKey.toBuffer()
+      ],
+      mintProgram.programId
+    )
+
+
+    await mintProgram.methods.createHolding()
+    .accounts({
+      mint: MintKey.publicKey,
+      rent: SYSVAR_RENT_PUBKEY,
+      myPda: holdingAddress2,
+      authority: user1.publicKey,
+      payer: provider.wallet.publicKey
+    }).signers([user1])
+    .rpc()
+
+
+    const create_account = new anchor.web3.Transaction().add(
+      createAssociatedTokenAccountInstruction(
+        provider.wallet.publicKey, activeAddress2, user1.publicKey, MintKey.publicKey
+      )
+    );
+
+    const res = await anchor.AnchorProvider.env().sendAndConfirm(create_account, []);
+
+
+    await mintProgram.methods.mintToken().accounts({
+      mint: MintKey.publicKey,
+      tokenProgram: TOKEN_PROGRAM_ID,
+      tokenAccount: activeAddress2,
+      authority: provider.wallet.publicKey
+    }).rpc();
+
+
+    let result =  <anchor.web3.ParsedAccountData> (await program.provider.connection.getParsedAccountInfo(activeAddress2)).value.data
+
+    console.log(result.parsed)
+
+
+
+
+
+    await program.methods
+    .trade("Jimbo!", 80, 25)
+    .accounts({
+      user: user1.publicKey,
+      companyData: companyDataLocation,
+      companyDataOrders: companyOrderLocation,
+      exchange: exchangeKeypair.publicKey,
+      main: activeAddress2,
+      holding: holdingAddress2,
+      mintProgram:  mintProgram.programId,
+      tokenProgram: TOKEN_PROGRAM_ID
+    })
+    .signers([user1])
     .rpc();
 
 
 
-     orderBook = (await program.account.orderBook.fetch(companyOrderLocation))
+    result =  <anchor.web3.ParsedAccountData> (await program.provider.connection.getParsedAccountInfo(activeAddress2)).value.data
+
+    console.log(result.parsed)
+
+
+    orderBook = (await program.account.orderBook.fetch(companyOrderLocation))
     console.log(orderBook)
+
 
     })
 

@@ -2,6 +2,7 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { GenesisMint } from "../target/types/genesis_mint";
 import { PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY } from '@solana/web3.js';
+import {MintKey} from './mint'
 
 import {
   TOKEN_PROGRAM_ID,
@@ -22,7 +23,6 @@ describe("genesis-mint", () => {
   // Retrieve the TokenContract struct from our smart contract
   const program = anchor.workspace.GenesisMint as Program<GenesisMint>;
   // Generate a random keypair that will represent our token
-  const mintKey: anchor.web3.Keypair = anchor.web3.Keypair.generate();
   // AssociatedTokenAccount for anchor's workspace wallet
   const key = anchor.AnchorProvider.env().wallet.publicKey;
 
@@ -43,17 +43,17 @@ describe("genesis-mint", () => {
     // Use anchor to create an account from the mint key that we created
     anchor.web3.SystemProgram.createAccount({
       fromPubkey: key,
-      newAccountPubkey: mintKey.publicKey,
+      newAccountPubkey: MintKey.publicKey,
       space: MINT_SIZE,
       programId: TOKEN_PROGRAM_ID,
       lamports,
     }),
     createInitializeMintInstruction(
-      mintKey.publicKey, 0, key, key
+      MintKey.publicKey, 0, key, key
     ))
 
 
-    const a = await anchor.AnchorProvider.env().sendAndConfirm(mint_init, [mintKey]);
+    const a = await anchor.AnchorProvider.env().sendAndConfirm(mint_init, [MintKey]);
 
   
   })
@@ -61,7 +61,7 @@ describe("genesis-mint", () => {
 
   it("account setup", async () => {
     activeAccount = await getAssociatedTokenAddress(
-      mintKey.publicKey,
+      MintKey.publicKey,
       key,
     );
 
@@ -78,7 +78,7 @@ describe("genesis-mint", () => {
 
     await program.methods.createHolding()
     .accounts({
-      mint: mintKey.publicKey,
+      mint: MintKey.publicKey,
       rent: SYSVAR_RENT_PUBKEY,
       myPda: holdingAcount,
       authority: key
@@ -89,18 +89,18 @@ describe("genesis-mint", () => {
 
     const create_account = new anchor.web3.Transaction().add(
       createAssociatedTokenAccountInstruction(
-        key, activeAccount, key, mintKey.publicKey
+        key, activeAccount, key, MintKey.publicKey
       )
     );
 
     const res = await anchor.AnchorProvider.env().sendAndConfirm(create_account, []);
 
     console.log(
-      await program.provider.connection.getParsedAccountInfo(mintKey.publicKey)
+      await program.provider.connection.getParsedAccountInfo(MintKey.publicKey)
     );
 
     console.log("Account: ", res);
-    console.log("Mint key: ", mintKey.publicKey.toString());
+    console.log("Mint key: ", MintKey.publicKey.toString());
     console.log("User: ", key.toString());
   })
 
@@ -109,7 +109,7 @@ describe("genesis-mint", () => {
   it("Mint a token", async () => {
 
     await program.methods.mintToken().accounts({
-      mint: mintKey.publicKey,
+      mint: MintKey.publicKey,
       tokenProgram: TOKEN_PROGRAM_ID,
       tokenAccount: activeAccount,
       authority: key,

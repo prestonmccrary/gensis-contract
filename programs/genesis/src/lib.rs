@@ -1,6 +1,10 @@
 use anchor_lang::prelude::*;
 use std::cmp::Ordering;
-use std::mem::size_of;
+use anchor_spl::token::{Token, TokenAccount};
+use genesis_mint::cpi::accounts::TransferToken;
+
+use genesis_mint::program::GenesisMint;
+
 
 declare_id!("Dyc7E1a2zVfRy3TUg5Ff3MJTnnkcXx8JT8dxWBaQioDf");
 
@@ -47,10 +51,10 @@ pub mod genesis {
         Ok(())
     }
 
-    pub fn trade(ctx: Context<TradeContext>, company: String, num_shares: u32, price_level: u32) -> Result<(u32)> {
-        let company_data = &mut ctx.accounts.company_data;
+    pub fn trade(ctx: Context<TradeContext>, company: String, num_shares: u32, price_level: u32) -> Result<u32> {
         let order_book = &mut ctx.accounts.company_data_orders;
         let user_acct = &mut ctx.accounts.user;
+        let token_program = &mut ctx.accounts.token_program;
 
         let clock = Clock::get().unwrap();
 
@@ -62,13 +66,39 @@ pub mod genesis {
             buyer: user_acct.key()
         };
 
-        match order_book.handle_order(&mut new_order) {
-            Ok(price) => {
-                Ok(price)
-            },
-            _ => Ok(0)
-         }
+        let cost = new_order.quantity * new_order.price;
 
+
+
+        let active_acc = &mut ctx.accounts.main;
+        let holding_acct = &mut ctx.accounts.holding;
+
+        if active_acc.amount >= (cost as u64){
+
+            match order_book.handle_order(&mut new_order) {
+                Ok(price) => {
+                    let instruction = TransferToken {
+                        from_authority: user_acct.to_account_info(),
+                        from: active_acc.to_account_info(),
+                        to: holding_acct.to_account_info(),
+                        token_program: token_program.to_account_info()
+                    };
+
+                    let cpi_program = ctx.accounts.mint_program.to_account_info();
+                    // Create the Context for our Transfer request
+                    let cpi_ctx = CpiContext::new(cpi_program, instruction);
+
+                    genesis_mint::cpi::transfer(cpi_ctx, price as u64)?;
+                    
+                    return Ok(price)
+
+                },
+                _ => return Ok(0)
+            }
+        } 
+
+
+        Ok(0)
     }
         
 
@@ -159,8 +189,17 @@ pub struct TradeContext<'info> {
 
 
     #[account(mut)]
+    pub main: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub holding: Account<'info, TokenAccount>,
+
+
+
+    #[account(mut)]
     pub exchange: Account<'info, ExchangeData>,
     pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
+    pub mint_program: Program<'info, GenesisMint>,
 }
 
 

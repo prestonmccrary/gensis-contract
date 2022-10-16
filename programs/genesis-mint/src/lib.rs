@@ -22,7 +22,7 @@ pub mod genesis_mint {
         let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
 
         // Execute anchor's helper function to mint tokens
-        token::mint_to(cpi_ctx, 10)?;
+        token::mint_to(cpi_ctx, 10000)?;
         
         Ok(())
     }
@@ -71,13 +71,16 @@ pub struct CreateHolding<'info> {
 
     #[account(mut)]
     pub authority: Signer<'info>,
+    #[account(mut)]
+    pub payer: Signer<'info>,
+
     pub system_program: Program<'info, System>,
 
     #[account(
         init,
         seeds = [b"holding-account".as_ref(), authority.key().as_ref()],
         bump,
-        payer = authority,
+        payer = payer,
         token::mint = mint,
         token::authority = mint,
     )]
@@ -87,6 +90,9 @@ pub struct CreateHolding<'info> {
     pub rent: Sysvar<'info, Rent>,
     pub token_program: Program<'info, Token>,
 }
+
+
+
 
 #[derive(Accounts)]
 pub struct TransferToken<'info> {

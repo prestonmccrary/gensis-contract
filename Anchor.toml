@@ -11,3 +11,7 @@ wallet = "/Users/preston/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[programs.localnet]
+genesis = "Dyc7E1a2zVfRy3TUg5Ff3MJTnnkcXx8JT8dxWBaQioDf"
+genesis_mint = "DJi3Dy9Z55HqoDQDwMqvW9d7nRGSdf5Rb5Kcafkh9KjE"
